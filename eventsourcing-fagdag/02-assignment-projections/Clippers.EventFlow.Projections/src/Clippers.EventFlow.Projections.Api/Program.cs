@@ -17,16 +17,16 @@ builder.Services.AddLogging();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
-        builder.AllowAnyMethod();
-        builder.AllowAnyHeader();
-        builder.AllowCredentials();
-        builder.WithHeaders(HeaderNames.AccessControlAllowCredentials, "true");
-        builder.WithHeaders(HeaderNames.XRequestedWith);
-        builder.WithHeaders("x-signalr-user-agent");
-    });
+  options.AddDefaultPolicy(builder =>
+  {
+    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+    builder.AllowAnyMethod();
+    builder.AllowAnyHeader();
+    builder.AllowCredentials();
+    builder.WithHeaders(HeaderNames.AccessControlAllowCredentials, "true");
+    builder.WithHeaders(HeaderNames.XRequestedWith);
+    builder.WithHeaders("x-signalr-user-agent");
+  });
 });
 
 
@@ -51,16 +51,16 @@ app.MapHub<NotificationHub>("/projectionchanged");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
 app.MapGet("/projections", async ([FromServices] IProjectionService projectionService) =>
 {
-    var result = await projectionService.GetViews();
-    return result;
+  var result = await projectionService.GetViews();
+  return result;
 })
     .WithMetadata(new SwaggerOperationAttribute(summary: "Get all Projections", description: "Get all the projections as JSON."))
     .Produces<string>(StatusCodes.Status200OK)
@@ -68,13 +68,13 @@ app.MapGet("/projections", async ([FromServices] IProjectionService projectionSe
 
 app.MapGet("/projections/{name}", async (string name, [FromServices] IProjectionService projectionService) =>
 {
-    var result = await projectionService.GetView(name);
+  var result = await projectionService.GetView(name);
 
-    if (string.IsNullOrEmpty(result) || result == "{}")
-    {
-        return Results.NotFound();
-    }
-    return Results.Ok(result);
+  if (string.IsNullOrEmpty(result) || result == "{}")
+  {
+    return Results.NotFound();
+  }
+  return Results.Ok(result);
 
 
 
@@ -87,7 +87,7 @@ app.MapGet("/projections/{name}", async (string name, [FromServices] IProjection
 var projectionEngine = app.Services.GetService<ICosmosDBProjectionEngine>();
 if (projectionEngine is null)
 {
-    throw new NullReferenceException("projectionEngine is null. Aborting.");
+  throw new NullReferenceException("projectionEngine is null. Aborting.");
 }
 
 projectionEngine.RegisterProjection(new NumOfHaircutsCreatedProjection());

@@ -19,12 +19,12 @@ builder.Services.AddLogging();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
-        builder.AllowAnyHeader();
-        builder.AllowAnyMethod();
-    });
+  options.AddDefaultPolicy(builder =>
+  {
+    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+    builder.AllowAnyHeader();
+    builder.AllowAnyMethod();
+  });
 });
 
 //*************** This is injected for CDE Version (CosmosDB)**************
@@ -73,60 +73,60 @@ subscriber?.RegisterProjection(new QueueDictStyleProjection());
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
 app.MapPost("/createHaircut", async ([FromBody] CreateHaircutCommand createHaircutCommand, [FromServices] ICreateHaircutService createHaircutService) =>
 {
-    var ret = await createHaircutService.CreateHaircut(createHaircutCommand);
-    return ret;
+  var ret = await createHaircutService.CreateHaircut(createHaircutCommand);
+  return ret;
 }).WithMetadata(new SwaggerOperationAttribute(summary: "Create a haircut in the EventStore.", description: "Creates the haircut. Returns the Haircut with its new HaircutId, in status waiting."));
 
 app.MapPost("/startHaircut", async ([FromBody] StartHaircutCommand startHaircutCommand, [FromServices] IStartHaircutService startHaircutService) =>
 {
-    try
-    {
-        var ret = await startHaircutService.StartHaircut(startHaircutCommand);
-        return Results.Ok(ret);
-    }
-    catch (Exception ex)
-    {
-        return Results.BadRequest(ex);
-    }
+  try
+  {
+    var ret = await startHaircutService.StartHaircut(startHaircutCommand);
+    return Results.Ok(ret);
+  }
+  catch (Exception ex)
+  {
+    return Results.BadRequest(ex);
+  }
 }).WithMetadata(new SwaggerOperationAttribute(summary: "Starts a haircut in the EventStore.", description: "Starts the haircut identified by the HaircutId provided. You can only start a haircut when it is in the waiting status. "))
   .Produces<string>(StatusCodes.Status200OK)
   .Produces(StatusCodes.Status400BadRequest);
 
 app.MapPost("/completeHaircut", async ([FromBody] CompleteHaircutCommand completeHaircutCommand, [FromServices] ICompleteHaircutService completeHaircutService) =>
 {
-    try
-    {
-        var ret = await completeHaircutService.CompleteHaircut(completeHaircutCommand);
-        return Results.Ok(ret);
-    }
-    catch (Exception ex)
-    {
-        return Results.BadRequest(ex);
-    }
+  try
+  {
+    var ret = await completeHaircutService.CompleteHaircut(completeHaircutCommand);
+    return Results.Ok(ret);
+  }
+  catch (Exception ex)
+  {
+    return Results.BadRequest(ex);
+  }
 }).WithMetadata(new SwaggerOperationAttribute(summary: "Completes a haircut in the EventStore.", description: "Completes the haircut identified by the HaircutId provided.  You can only complete a haircut when it is in the serving status."))
   .Produces<string>(StatusCodes.Status200OK)
   .Produces(StatusCodes.Status400BadRequest);
 
 app.MapPost("/cancelHaircut", async ([FromBody] CancelHaircutCommand cancelHaircutCommand, [FromServices] ICancelHaircutService cancelHaircutService) =>
 {
-    try
-    {
-        var ret = await cancelHaircutService.CancelHaircut(cancelHaircutCommand);
-        return Results.Ok(ret);
-    }
-    catch (Exception ex)
-    {
-        return Results.BadRequest(ex);
-    }
-    
+  try
+  {
+    var ret = await cancelHaircutService.CancelHaircut(cancelHaircutCommand);
+    return Results.Ok(ret);
+  }
+  catch (Exception ex)
+  {
+    return Results.BadRequest(ex);
+  }
+
 }).WithMetadata(new SwaggerOperationAttribute(summary: "Cancel a haircut in the EventStore.", description: "Cancel the haircut identified by the HaircutId provided.  You can only cancel a haircut in the waiting status."))
   .Produces<string>(StatusCodes.Status200OK)
   .Produces(StatusCodes.Status400BadRequest);

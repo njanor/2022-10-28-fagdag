@@ -11,12 +11,12 @@ builder.Services.AddLogging();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
-        builder.AllowAnyHeader();
-        builder.AllowAnyMethod();
-    });
+  options.AddDefaultPolicy(builder =>
+  {
+    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+    builder.AllowAnyHeader();
+    builder.AllowAnyMethod();
+  });
 });
 
 //*************** This is injected for CDE Version (CosmosDB)**************
@@ -55,8 +55,8 @@ var subscriber = app.Services.GetService<ISubscriber>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

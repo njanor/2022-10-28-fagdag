@@ -15,12 +15,12 @@ builder.Services.AddLogging();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
-        builder.AllowAnyHeader();
-        builder.AllowAnyMethod();
-    });
+  options.AddDefaultPolicy(builder =>
+  {
+    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+    builder.AllowAnyHeader();
+    builder.AllowAnyMethod();
+  });
 });
 
 //*************** This is injected for CDE Version (CosmosDB)**************
@@ -59,16 +59,16 @@ var app = builder.Build();
 
 app.UseCors();
 
-app.MapPost("/CreateHaircut", async([FromBody] CreateHaircutCommand createHaircutCommand, [FromServices] ICreateHaircutService createHaircutService) =>
+app.MapPost("/CreateHaircut", async ([FromBody] CreateHaircutCommand createHaircutCommand, [FromServices] ICreateHaircutService createHaircutService) =>
 {
-    return await createHaircutService.CreateHaircut(createHaircutCommand);
+  return await createHaircutService.CreateHaircut(createHaircutCommand);
 });
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
